@@ -6,7 +6,7 @@ import geo.optim.pfe.dtos.readDtos.organization.CompanyReadDto;
 import geo.optim.pfe.dtos.readDtos.user.AccountUserReadDto;
 
 public record VehicleReadDto(
-    int id,
+    Integer id,
     String imei,
     String immatriculation,
     String label,

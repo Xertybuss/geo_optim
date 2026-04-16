@@ -6,7 +6,7 @@ import java.sql.Time;
 import geo.optim.pfe.dtos.readDtos.organization.CollaboraterReadDto;
 
 public record UsageReadDto(
-    int id,
+    Integer id,
     Date dateStartAffectation,
     Date dateEndAffectation,
     Time startHourMorning,

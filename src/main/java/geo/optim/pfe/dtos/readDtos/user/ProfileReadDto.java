@@ -3,7 +3,7 @@ package geo.optim.pfe.dtos.readDtos.user;
 import java.util.List;
 
 public record ProfileReadDto(
-    int id,
+    Integer id,
     String codeProfile,
     String label,
     List<AccountUserReadDto> accounts,

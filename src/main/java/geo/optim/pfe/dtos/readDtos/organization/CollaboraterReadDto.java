@@ -6,7 +6,7 @@ import geo.optim.pfe.dtos.readDtos.transport.TravelReadDto;
 import geo.optim.pfe.dtos.readDtos.transport.UsageReadDto;
 
 public record CollaboraterReadDto(
-    int id,
+    Integer id,
     String firstName,
     String lastName,
     String phoneNumber,

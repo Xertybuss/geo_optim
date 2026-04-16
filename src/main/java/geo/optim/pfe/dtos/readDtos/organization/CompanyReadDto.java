@@ -7,7 +7,7 @@ import geo.optim.pfe.dtos.readDtos.transport.VehicleReadDto;
 import geo.optim.pfe.dtos.readDtos.user.AccountUserReadDto;
 
 public record CompanyReadDto(
-    int id,
+    Integer id,
     String codeCompany,
     String label,
     String address,
