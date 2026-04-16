@@ -8,10 +8,10 @@ import lombok.Setter;
 
 @Getter @Setter
 public class UsageWriteDto {
-    private Date dateStart_affectation;
-    private Date dateEnd_affectation;
-    private Time startHourMourning;
-    private Time endHourMourning;
+    private Date dateStartAffectation;
+    private Date dateEndAffectation;
+    private Time startHourMorning;
+    private Time endHourMorning;
     private Time startHourEvening;
     private Time endHourEvening;
     private int collaborater_id;
