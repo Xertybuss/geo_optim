@@ -2,6 +2,7 @@ package geo.optim.pfe.controllers.user;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,26 +29,31 @@ public class PermissionController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<PermissionReadDto> getAllPermissions() {
         return permissionMapper.toDTOList(permissionService.getAllPermissions());
     }
     
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public PermissionReadDto getPermission(@PathVariable Integer id) {
         return permissionMapper.toDTO(permissionService.getPermissionById(id));
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public PermissionReadDto createPermission(@RequestBody PermissionWriteDto entity) {
         return permissionMapper.toDTO(permissionService.createPermission(permissionMapper.toEntity(entity)));
     }
     
     @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public PermissionReadDto updatePermission(@RequestBody PermissionWriteDto entity) {
         return permissionMapper.toDTO(permissionService.updatePermission(permissionMapper.toEntity(entity)));
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void deletePermission(@PathVariable Integer id){
         permissionService.deletePermission(id);
     }

@@ -2,6 +2,7 @@ package geo.optim.pfe.controllers.transport;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,26 +28,31 @@ public class TravelController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public List<TravelReadDto> getAllTravels() {
         return travelMapper.toDTOList(travelService.getAllTravels());
     }
     
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public TravelReadDto getTravelById(@PathVariable Integer id) {
         return travelMapper.toDTO(travelService.getTravelById(id));
     }
     
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public TravelReadDto createTravel(@RequestBody TravelWriteDto entity) {
         return travelMapper.toDTO(travelService.createTravel(travelMapper.toEntity(entity)));
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public TravelReadDto updateTravel(@RequestBody TravelWriteDto entity) {
         return travelMapper.toDTO(travelService.updateTravel(travelMapper.toEntity(entity)));   
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public void deleteTravel(@PathVariable Integer id){
         travelService.deleteTravel(id);
     }

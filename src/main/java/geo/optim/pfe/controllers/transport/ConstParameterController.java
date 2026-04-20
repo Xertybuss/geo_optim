@@ -2,6 +2,7 @@ package geo.optim.pfe.controllers.transport;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,26 +29,31 @@ public class ConstParameterController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public List<ConstParameterReadDto> getAllConstParameters() {
         return ConstParameterMapper.toDTOList(constParameterService.getAllConstParameters());
     }
     
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public ConstParameterReadDto getConstParameterById(@PathVariable Integer id) {
         return ConstParameterMapper.toDTO(constParameterService.getConstParameterById(id));
     }
     
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public ConstParameterReadDto createConstParameter(@RequestBody ConstParameterWriteDto entity) {
         return ConstParameterMapper.toDTO(constParameterService.createConstParameter(ConstParameterMapper.toEntity(entity)));
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public ConstParameterReadDto updateConstParameter(@RequestBody ConstParameterWriteDto entity) {
         return ConstParameterMapper.toDTO(constParameterService.updateConstParameter(ConstParameterMapper.toEntity(entity)));   
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public void deleteConstParameter(@PathVariable Integer id){
         constParameterService.deleteConstParameter(id);
     }

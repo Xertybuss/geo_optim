@@ -2,6 +2,7 @@ package geo.optim.pfe.controllers.user;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,26 +28,31 @@ public class AccountUserController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<AccountUserReadDto> getAllAccountUsers() {
         return accountUserMapper.toDTOList(accountUserService.getAccountUsers());
     }
     
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AccountUserReadDto getAccountUserById(@PathVariable Integer id) {
         return accountUserMapper.toDTO(accountUserService.getAccountUserById(id));
     }
     
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AccountUserReadDto createAccountUser(@RequestBody AccountUserWriteDto entity) {
         return accountUserMapper.toDTO(accountUserService.createAccountUser(accountUserMapper.toEntity(entity)));
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public AccountUserReadDto updateAccountUser(@RequestBody AccountUserWriteDto entity) {
         return accountUserMapper.toDTO(accountUserService.updateAccountUser(accountUserMapper.toEntity(entity)));   
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void deleteAccountUser(@PathVariable Integer id){
         accountUserService.deleteAccountUser(id);
     }

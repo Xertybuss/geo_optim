@@ -2,6 +2,7 @@ package geo.optim.pfe.controllers.transport;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,26 +29,31 @@ public class UsageController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public List<UsageReadDto> getAllUsages() {
         return UsageMapper.toDTOList(usageService.getAllUsages());
     }
     
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS') or hasAnyAuthority('DRIVER')")
     public UsageReadDto getReadDto(@PathVariable Integer id) {
         return UsageMapper.toDTO(usageService.getUsageById(id));
     }
     
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public UsageReadDto createUsage(@RequestBody UsageWriteDto entity) {
         return UsageMapper.toDTO(usageService.createUsage(UsageMapper.toEntity(entity)));
     }
 
     @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public UsageReadDto updateUsage(@RequestBody UsageWriteDto entity) {
         return UsageMapper.toDTO(usageService.updateUsage(UsageMapper.toEntity(entity)));
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('LOGISTICS')")
     public void deleteUsage(@PathVariable Integer id){
         usageService.deleteUsage(id);
     }
