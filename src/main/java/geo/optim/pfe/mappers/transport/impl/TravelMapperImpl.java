@@ -2,6 +2,8 @@ package geo.optim.pfe.mappers.transport.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import geo.optim.pfe.dtos.readDtos.transport.TravelReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.transport.TravelWriteDto;
 import geo.optim.pfe.entities.transport.Travel;
@@ -11,6 +13,7 @@ import geo.optim.pfe.repositories.organization.CollaboraterRepository;
 import geo.optim.pfe.repositories.transport.TripRepository;
 import geo.optim.pfe.repositories.user.AccountUserRepository;
 
+@Component
 public class TravelMapperImpl implements TravelMapper {
     private final CollaboraterMapper collaboraterMapper;
     private final AccountUserRepository accountUserRepository;

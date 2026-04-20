@@ -2,6 +2,9 @@ package geo.optim.pfe.mappers.transport.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.ObjectProvider;
+
 import geo.optim.pfe.dtos.readDtos.transport.ConstParameterReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.transport.ConstParameterWriteDto;
 import geo.optim.pfe.entities.transport.ConstParameter;
@@ -9,13 +12,14 @@ import geo.optim.pfe.mappers.transport.inter.ConstParameterMapper;
 import geo.optim.pfe.mappers.transport.inter.TripMapper;
 import geo.optim.pfe.repositories.transport.TripRepository;
 
+@Component
 public class ConstParameterMapperImpl implements ConstParameterMapper {
     private final TripRepository tripRepository;
-    private final TripMapper tripMapper;
+    private final ObjectProvider<TripMapper> tripMapperProvider;
 
-    public ConstParameterMapperImpl(TripRepository tripRepository, TripMapper tripMapper) {
+    public ConstParameterMapperImpl(TripRepository tripRepository, ObjectProvider<TripMapper> tripMapperProvider) {
         this.tripRepository = tripRepository;
-        this.tripMapper = tripMapper;
+        this.tripMapperProvider = tripMapperProvider;
     }
 
     @Override
@@ -27,7 +31,7 @@ public class ConstParameterMapperImpl implements ConstParameterMapper {
             constParameter.getId(),
             constParameter.getCode_param(),
             constParameter.getValue_param(),
-            tripMapper.toDTO(constParameter.getTrip())
+            tripMapperProvider.getObject().toDTO(constParameter.getTrip())
         );
     }
 

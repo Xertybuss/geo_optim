@@ -2,19 +2,20 @@ package geo.optim.pfe.mappers.user;
 
 import java.util.List;
 
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.ObjectProvider;
 
 import geo.optim.pfe.dtos.readDtos.user.ProfileReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.user.ProfileWriteDto;
 import geo.optim.pfe.entities.user.Profile;
 
-@Mapper(componentModel = "spring")
+@Component
 public class ProfileMapperImpl implements ProfileMapper {
-    private final AccountUserMapper accountUserMapper;
+    private final ObjectProvider<AccountUserMapper> accountUserMapperProvider;
     private final PermissionMapper permissionMapper;
 
-    public ProfileMapperImpl(AccountUserMapper accountUserMapper, PermissionMapper permissionMapper) {
-        this.accountUserMapper = accountUserMapper;
+    public ProfileMapperImpl(ObjectProvider<AccountUserMapper> accountUserMapperProvider, PermissionMapper permissionMapper) {
+        this.accountUserMapperProvider = accountUserMapperProvider;
         this.permissionMapper = permissionMapper;
     }
 
@@ -27,7 +28,7 @@ public class ProfileMapperImpl implements ProfileMapper {
             profile.getId(),
             profile.getCodeProfile(),
             profile.getLabel(),
-            accountUserMapper.toDTOList(profile.getAccounts()),
+            accountUserMapperProvider.getObject().toDTOList(profile.getAccounts()),
             permissionMapper.toDTOList(profile.getPermissions())
         );
     }

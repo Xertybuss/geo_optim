@@ -2,6 +2,9 @@ package geo.optim.pfe.mappers.transport.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.ObjectProvider;
+
 import geo.optim.pfe.dtos.readDtos.transport.TripReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.transport.TripWriteDto;
 import geo.optim.pfe.entities.transport.Trip;
@@ -11,16 +14,17 @@ import geo.optim.pfe.mappers.transport.inter.TravelMapper;
 import geo.optim.pfe.mappers.transport.inter.TripMapper;
 import geo.optim.pfe.repositories.organization.CompanyRepository;
 
+@Component
 public class TripMapperImpl implements TripMapper {
-    private final ConstParameterMapper constParameterMapper;
+    private final ObjectProvider<ConstParameterMapper> constParameterMapperProvider;
     private final TravelMapper travelMapper;
-    private final CompanyMapper companyMapper;
+    private final ObjectProvider<CompanyMapper> companyMapperProvider;
     private final CompanyRepository companyRepository;
 
-    public TripMapperImpl(ConstParameterMapper constParameterMapper, TravelMapper travelMapper, CompanyMapper companyMapper, CompanyRepository companyRepository) {
-        this.constParameterMapper = constParameterMapper;
+    public TripMapperImpl(ObjectProvider<ConstParameterMapper> constParameterMapperProvider, TravelMapper travelMapper, ObjectProvider<CompanyMapper> companyMapperProvider, CompanyRepository companyRepository) {
+        this.constParameterMapperProvider = constParameterMapperProvider;
         this.travelMapper = travelMapper;
-        this.companyMapper = companyMapper;
+        this.companyMapperProvider = companyMapperProvider;
         this.companyRepository = companyRepository;
     }
 
@@ -38,9 +42,9 @@ public class TripMapperImpl implements TripMapper {
             trip.getTotal_distance(),
             trip.getTotal_duration(),
             trip.getTotal_passengers(),
-            constParameterMapper.toDTOList(trip.getParameters()),
+            constParameterMapperProvider.getObject().toDTOList(trip.getParameters()),
             travelMapper.toDTOList(trip.getTravels()),
-            companyMapper.toDTO(trip.getCompany())
+            companyMapperProvider.getObject().toDTO(trip.getCompany())
         );
     }
 

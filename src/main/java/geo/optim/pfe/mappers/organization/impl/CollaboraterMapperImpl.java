@@ -2,6 +2,9 @@ package geo.optim.pfe.mappers.organization.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.ObjectProvider;
+
 import geo.optim.pfe.dtos.readDtos.organization.CollaboraterReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.organization.CollaboraterWriteDto;
 import geo.optim.pfe.entities.organization.Collaborater;
@@ -10,13 +13,14 @@ import geo.optim.pfe.mappers.organization.inter.CollaboraterMapper;
 import geo.optim.pfe.mappers.organization.inter.CompanyMapper;
 import geo.optim.pfe.repositories.organization.CompanyRepository;
 
+@Component
 public class CollaboraterMapperImpl implements CollaboraterMapper {
-    private final CompanyMapper companyMapper;
+    private final ObjectProvider<CompanyMapper> companyMapperProvider;
     private final CompanyRepository companyRepository;
 
-    public CollaboraterMapperImpl(CompanyRepository companyRepository, CompanyMapper companyMapper) {
+    public CollaboraterMapperImpl(CompanyRepository companyRepository, ObjectProvider<CompanyMapper> companyMapperProvider) {
         this.companyRepository = companyRepository;
-        this.companyMapper = companyMapper;
+        this.companyMapperProvider = companyMapperProvider;
     }
 
     @Override
@@ -30,14 +34,14 @@ public class CollaboraterMapperImpl implements CollaboraterMapper {
             collaborater.getHomeLocation(),
             collaborater.getAddress(),
             collaborater.getCollabType().getLabel(),
-            companyMapper.toDTO(collaborater.getCompany()),
+            companyMapperProvider.getObject().toDTO(collaborater.getCompany()),
             null,
             null
         );
     }
 
     @Override
-    public Collaborater toCollaborater(CollaboraterWriteDto collaboraterWriteDto) {
+    public Collaborater toEntity(CollaboraterWriteDto collaboraterWriteDto) {
         if (collaboraterWriteDto == null) return null;
         Collaborater collaborater = new Collaborater();
         collaborater.setFirstName(collaboraterWriteDto.getFirstName());

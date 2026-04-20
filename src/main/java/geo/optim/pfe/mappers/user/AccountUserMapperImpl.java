@@ -2,6 +2,9 @@ package geo.optim.pfe.mappers.user;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.ObjectProvider;
+
 import geo.optim.pfe.dtos.readDtos.user.AccountUserReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.user.AccountUserWriteDto;
 import geo.optim.pfe.entities.user.AccountUser;
@@ -10,17 +13,18 @@ import geo.optim.pfe.mappers.transport.inter.VehicleMapper;
 import geo.optim.pfe.repositories.organization.CompanyRepository;
 import geo.optim.pfe.repositories.user.ProfileRepository;
 
+@Component
 public class AccountUserMapperImpl implements AccountUserMapper {
-    private final CompanyMapper companyMapper;
-    private final VehicleMapper vehicleMapper;
-    private final ProfileMapper profileMapper;
+    private final ObjectProvider<CompanyMapper> companyMapperProvider;
+    private final ObjectProvider<VehicleMapper> vehicleMapperProvider;
+    private final ObjectProvider<ProfileMapper> profileMapperProvider;
     private final CompanyRepository companyRepository;
     private final ProfileRepository profileRepository;
 
-    public AccountUserMapperImpl(CompanyMapper companyMapper, VehicleMapper vehicleMapper, ProfileMapper profileMapper, CompanyRepository companyRepository, ProfileRepository profileRepository) {
-        this.companyMapper = companyMapper;
-        this.vehicleMapper = vehicleMapper;
-        this.profileMapper = profileMapper;
+    public AccountUserMapperImpl(ObjectProvider<CompanyMapper> companyMapperProvider, ObjectProvider<VehicleMapper> vehicleMapperProvider, ObjectProvider<ProfileMapper> profileMapperProvider, CompanyRepository companyRepository, ProfileRepository profileRepository) {
+        this.companyMapperProvider = companyMapperProvider;
+        this.vehicleMapperProvider = vehicleMapperProvider;
+        this.profileMapperProvider = profileMapperProvider;
         this.companyRepository = companyRepository;
         this.profileRepository = profileRepository;
     }
@@ -37,9 +41,9 @@ public class AccountUserMapperImpl implements AccountUserMapper {
             accountUser.getUsername(),
             accountUser.getPhoneNumber(),
             accountUser.isActivated(),
-            companyMapper.toDTO(accountUser.getCompany()),
-            profileMapper.toDTO(accountUser.getProfile()),
-            vehicleMapper.toDTOList(accountUser.getVehicles())
+            companyMapperProvider.getObject().toDTO(accountUser.getCompany()),
+            profileMapperProvider.getObject().toDTO(accountUser.getProfile()),
+            vehicleMapperProvider.getObject().toDTOList(accountUser.getVehicles())
         );
     }
 

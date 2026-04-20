@@ -2,6 +2,9 @@ package geo.optim.pfe.mappers.transport.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.stereotype.Component;
+
 import geo.optim.pfe.dtos.readDtos.transport.VehicleReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.transport.VehicleWriteDto;
 import geo.optim.pfe.entities.transport.Vehicle;
@@ -12,16 +15,17 @@ import geo.optim.pfe.mappers.transport.inter.VehicleMapper;
 import geo.optim.pfe.mappers.user.AccountUserMapper;
 import geo.optim.pfe.repositories.organization.CompanyRepository;
 
+@Component
 public class VehicleMapperImpl implements VehicleMapper {
-    private final CompanyMapper companyMapper;
-    private final AccountUserMapper accountUserMapper;
-    private final UsageMapper usageMapper;
+    private final ObjectProvider<CompanyMapper> companyMapperProvider;
+    private final ObjectProvider<AccountUserMapper> accountUserMapperProvider;
+    private final ObjectProvider<UsageMapper> usageMapperProvider;
     private final CompanyRepository companyRepository;
 
-    public VehicleMapperImpl(CompanyMapper companyMapper, AccountUserMapper accountUserMapper, UsageMapper usageMapper, CompanyRepository companyRepository) {
-        this.companyMapper = companyMapper;
-        this.accountUserMapper = accountUserMapper;
-        this.usageMapper = usageMapper;
+    public VehicleMapperImpl(ObjectProvider<CompanyMapper> companyMapperProvider, ObjectProvider<AccountUserMapper> accountUserMapperProvider, ObjectProvider<UsageMapper> usageMapperProvider, CompanyRepository companyRepository) {
+        this.companyMapperProvider = companyMapperProvider;
+        this.accountUserMapperProvider = accountUserMapperProvider;
+        this.usageMapperProvider = usageMapperProvider;
         this.companyRepository = companyRepository;
     }
 
@@ -38,9 +42,9 @@ public class VehicleMapperImpl implements VehicleMapper {
             vehicle.getVehicleType().getLabel(),
             vehicle.getCapacityPlaces(),
             vehicle.getCapacityWeight(),
-            companyMapper.toDTO(vehicle.getCompany()),
-            accountUserMapper.toDTO(vehicle.getAccountUser()),
-            usageMapper.toDTOList(vehicle.getUsages())
+            companyMapperProvider.getObject().toDTO(vehicle.getCompany()),
+            accountUserMapperProvider.getObject().toDTO(vehicle.getAccountUser()),
+            usageMapperProvider.getObject().toDTOList(vehicle.getUsages())
         );   
     }
 
@@ -69,5 +73,4 @@ public class VehicleMapperImpl implements VehicleMapper {
             .map(this::toDTO)
             .toList();
     }
-
 }

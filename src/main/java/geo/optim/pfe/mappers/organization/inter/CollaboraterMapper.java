@@ -16,6 +16,6 @@ import geo.optim.pfe.entities.organization.Collaborater;
 )
 public interface CollaboraterMapper {
     public CollaboraterReadDto toDTO(Collaborater collaborater);
-    public Collaborater toCollaborater(CollaboraterWriteDto collaboraterWriteDto);
+    public Collaborater toEntity(CollaboraterWriteDto collaboraterWriteDto);
     public List<CollaboraterReadDto> toDTOList(List<Collaborater> collaboraters);
 }

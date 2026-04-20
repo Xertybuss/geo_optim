@@ -2,6 +2,9 @@ package geo.optim.pfe.mappers.transport.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.ObjectProvider;
+
 import geo.optim.pfe.dtos.readDtos.transport.UsageReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.transport.UsageWriteDto;
 import geo.optim.pfe.entities.transport.Usage;
@@ -9,13 +12,14 @@ import geo.optim.pfe.mappers.organization.inter.CollaboraterMapper;
 import geo.optim.pfe.mappers.transport.inter.UsageMapper;
 import geo.optim.pfe.mappers.transport.inter.VehicleMapper;
 
+@Component
 public class UsageMapperImpl implements UsageMapper {
     private final CollaboraterMapper collaboraterMapper;
-    private final VehicleMapper vehicleMapper;
+    private final ObjectProvider<VehicleMapper> vehicleMapperProvider;
 
-    public UsageMapperImpl(CollaboraterMapper collaboraterMapper, VehicleMapper vehicleMapper) {
+    public UsageMapperImpl(CollaboraterMapper collaboraterMapper, ObjectProvider<VehicleMapper> vehicleMapperProvider) {
         this.collaboraterMapper = collaboraterMapper;
-        this.vehicleMapper = vehicleMapper;
+        this.vehicleMapperProvider = vehicleMapperProvider;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class UsageMapperImpl implements UsageMapper {
             usage.getStartHourEvening(),
             usage.getEndHourEvening(),
             collaboraterMapper.toDTO(usage.getCollaborater()),
-            vehicleMapper.toDTO(usage.getVehicle())
+            vehicleMapperProvider.getObject().toDTO(usage.getVehicle())
         );
     }
 

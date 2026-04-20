@@ -2,6 +2,9 @@ package geo.optim.pfe.mappers.organization.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.ObjectProvider;
+
 import geo.optim.pfe.dtos.readDtos.organization.ClientApplicationReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.organization.ClientApplicationWriteDto;
 import geo.optim.pfe.entities.organization.ClientApplication;
@@ -9,12 +12,13 @@ import geo.optim.pfe.mappers.organization.inter.ClientApplicationMapper;
 import geo.optim.pfe.mappers.organization.inter.CompanyMapper;
 import geo.optim.pfe.repositories.organization.CompanyRepository;
 
+@Component
 public class ClientApplicationMapperImpl implements ClientApplicationMapper {
-    private final CompanyMapper companyMapper;
+    private final ObjectProvider<CompanyMapper> companyMapperProvider;
     private final CompanyRepository companyRepository;
 
-    public ClientApplicationMapperImpl(CompanyMapper companyMapper, CompanyRepository companyRepository) {
-        this.companyMapper = companyMapper;
+    public ClientApplicationMapperImpl(ObjectProvider<CompanyMapper> companyMapperProvider, CompanyRepository companyRepository) {
+        this.companyMapperProvider = companyMapperProvider;
         this.companyRepository = companyRepository;
     }
 
@@ -28,7 +32,7 @@ public class ClientApplicationMapperImpl implements ClientApplicationMapper {
             clientApplication.getApi_key(),
             clientApplication.getMax_transaction_day(),
             clientApplication.getActivated(),
-            companyMapper.toDTO(clientApplication.getCompany())
+            companyMapperProvider.getObject().toDTO(clientApplication.getCompany())
         );
     }
 

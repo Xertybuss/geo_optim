@@ -2,6 +2,9 @@ package geo.optim.pfe.mappers.organization.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.ObjectProvider;
+
 import geo.optim.pfe.dtos.readDtos.organization.CompanyReadDto;
 import geo.optim.pfe.dtos.writeUpdateDto.organization.CompanyWriteDto;
 import geo.optim.pfe.entities.organization.Company;
@@ -12,19 +15,20 @@ import geo.optim.pfe.mappers.transport.inter.TripMapper;
 import geo.optim.pfe.mappers.transport.inter.VehicleMapper;
 import geo.optim.pfe.mappers.user.AccountUserMapper;
 
+@Component
 public class CompanyMapperImpl implements CompanyMapper {
-    private final VehicleMapper vehicleMapper;
-    private final AccountUserMapper accountUserMapper;
-    private final CollaboraterMapper collaboraterMapper;
+    private final ObjectProvider<VehicleMapper> vehicleMapperProvider;
+    private final ObjectProvider<AccountUserMapper> accountUserMapperProvider;
+    private final ObjectProvider<CollaboraterMapper> collaboraterMapperProvider;
     private final TripMapper tripMapper;
     private final ClientApplicationMapper clientApplicationMapper;
 
-    public CompanyMapperImpl(VehicleMapper vehicleMapper, AccountUserMapper accountUserMapper,
-                             CollaboraterMapper collaboraterMapper, TripMapper tripMapper,
+    public CompanyMapperImpl(ObjectProvider<VehicleMapper> vehicleMapperProvider, ObjectProvider<AccountUserMapper> accountUserMapperProvider,
+                             ObjectProvider<CollaboraterMapper> collaboraterMapperProvider, TripMapper tripMapper,
                              ClientApplicationMapper clientApplicationMapper) {
-        this.vehicleMapper = vehicleMapper;
-        this.accountUserMapper = accountUserMapper;
-        this.collaboraterMapper = collaboraterMapper;
+        this.vehicleMapperProvider = vehicleMapperProvider;
+        this.accountUserMapperProvider = accountUserMapperProvider;
+        this.collaboraterMapperProvider = collaboraterMapperProvider;
         this.tripMapper = tripMapper;
         this.clientApplicationMapper = clientApplicationMapper;
     }
@@ -37,9 +41,9 @@ public class CompanyMapperImpl implements CompanyMapper {
             company.getLabel(),
             company.getAddress(),
             company.getPhoneNumber(),
-            vehicleMapper.toDTOList(company.getVehicles()),
-            accountUserMapper.toDTOList(company.getAccounts()),
-            collaboraterMapper.toDTOList(company.getCollaboraters()),
+            vehicleMapperProvider.getObject().toDTOList(company.getVehicles()),
+            accountUserMapperProvider.getObject().toDTOList(company.getAccounts()),
+            collaboraterMapperProvider.getObject().toDTOList(company.getCollaboraters()),
             tripMapper.toDTOList(company.getTrips()),
             clientApplicationMapper.toDTOList(company.getClientApplications())
         );

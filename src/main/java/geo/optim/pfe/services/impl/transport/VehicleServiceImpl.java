@@ -3,11 +3,13 @@ package geo.optim.pfe.services.impl.transport;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import geo.optim.pfe.entities.transport.Vehicle;
 import geo.optim.pfe.repositories.transport.VehicleRepository;
 import geo.optim.pfe.services.inter.transport.VehicleService;
 
+@Service
 public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository vehicleRepository;
 
