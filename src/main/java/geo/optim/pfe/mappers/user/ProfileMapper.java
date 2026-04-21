@@ -12,7 +12,6 @@ import geo.optim.pfe.entities.user.Profile;
 @Mapper(
     componentModel = "spring",
     uses = {
-        AccountUserMapper.class,
         PermissionMapper.class
     },
     injectionStrategy = InjectionStrategy.CONSTRUCTOR

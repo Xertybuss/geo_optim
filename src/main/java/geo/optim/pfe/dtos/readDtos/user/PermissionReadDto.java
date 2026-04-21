@@ -4,5 +4,5 @@ public record PermissionReadDto(
     Integer id,
     String codePermission,
     String label,
-    ProfileReadDto profile
+    ProfileSimpleReadDto profile
 ) {}

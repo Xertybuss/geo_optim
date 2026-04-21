@@ -12,11 +12,11 @@ import geo.optim.pfe.repositories.user.ProfileRepository;
 
 @Component
 public class PermissionMapperImpl implements PermissionMapper {
-    private final ObjectProvider<ProfileMapper> profileMapperProvider;
+    private final ObjectProvider<ProfileSimpleMapper> profileSimpleMapperProvider;
     private final ProfileRepository profileRepository;
 
-    public PermissionMapperImpl(ObjectProvider<ProfileMapper> profileMapperProvider, ProfileRepository profileRepository) {
-        this.profileMapperProvider = profileMapperProvider;
+    public PermissionMapperImpl(ObjectProvider<ProfileSimpleMapper> profileSimpleMapperProvider, ProfileRepository profileRepository) {
+        this.profileSimpleMapperProvider = profileSimpleMapperProvider;
         this.profileRepository = profileRepository;
     }
 
@@ -29,7 +29,7 @@ public class PermissionMapperImpl implements PermissionMapper {
             permission.getId(),
             permission.getCodePermission(),
             permission.getLabel(),
-            profileMapperProvider.getObject().toDTO(permission.getProfile())
+            profileSimpleMapperProvider.getObject().toDTO(permission.getProfile())
         );
     }
 

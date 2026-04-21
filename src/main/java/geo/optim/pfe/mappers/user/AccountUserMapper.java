@@ -13,8 +13,7 @@ import geo.optim.pfe.mappers.transport.inter.VehicleMapper;
 
 @Mapper(
     componentModel = "spring",
-    uses = {VehicleMapper.class, 
-            ProfileMapper.class,
+    uses = {VehicleMapper.class,
             CompanyMapper.class
         },
     injectionStrategy = InjectionStrategy.CONSTRUCTOR
